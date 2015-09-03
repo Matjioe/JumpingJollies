@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour {
 	public bool isMultiplayerNetwork = true;
 	public NetworkGameManager networkGameManager;
 
-	void Start()
+	void Awake()
 	{
 		_instance = this;
 

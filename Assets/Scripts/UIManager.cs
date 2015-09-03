@@ -59,6 +59,7 @@ public class UIManager : MonoBehaviour {
 
 	public void BackToMainMenu()
 	{
+		Destroy(FindObjectOfType<MenuNetworkManager>());
 		Application.LoadLevel("MenuScene");
 	}
 }

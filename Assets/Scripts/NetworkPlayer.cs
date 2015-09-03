@@ -14,6 +14,11 @@ public class NetworkPlayer : NetworkBehaviour
 
 	public void Awake()
 	{
+		InitPlayer();
+	}
+
+	void InitPlayer()
+	{
 		player = GetComponent<Player>();
 		player.isMultiplayerNetwork = true;
 	}
@@ -25,6 +30,7 @@ public class NetworkPlayer : NetworkBehaviour
 
 	public override void OnStartLocalPlayer ()
 	{
+		InitPlayer();
 		player.playerNb = (uint)base.netId.Value;
 		player.InitEjectForce ();
 		player.TeleportToSpawnPosition();
@@ -33,6 +39,7 @@ public class NetworkPlayer : NetworkBehaviour
 	// In case the color was set on local GameManager before the client was started.
 	public override void OnStartClient ()
 	{
+		InitPlayer();
 		player.playerNb = (uint)base.netId.Value;
 		player.SetColor();
 	}
