@@ -56,4 +56,9 @@ public class UIManager : MonoBehaviour {
 		if (playerNb < GameManager.instance.GetPlayerCount())
 			GameManager.instance.TriggerPlayerJump(playerNb);
 	}
+
+	public void BackToMainMenu()
+	{
+		Application.LoadLevel("MenuScene");
+	}
 }

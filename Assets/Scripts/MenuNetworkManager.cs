@@ -13,9 +13,4 @@ public class MenuNetworkManager : NetworkManager {
 	{
 		NetworkManager.singleton.StartClient();
 	}
-
-	public void StartLocalGame()
-	{
-		Application.LoadLevel("LocalGame");
-	}
 }
