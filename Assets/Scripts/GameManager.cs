@@ -44,11 +44,7 @@ public class GameManager : MonoBehaviour {
 		startPoleRPS = poleRPS;
 		lastPoleRPS = startPoleRPS;
 		timeSpent = 0.0f;
-
-		if (isMultiplayerNetwork == false)
-		{
-			localPlayers = new GameObject[maxLocalPlayers];
-		}
+		localPlayers = new GameObject[maxLocalPlayers];
 	}
 
 	void Update()
@@ -102,6 +98,12 @@ public class GameManager : MonoBehaviour {
 		player.isMultiplayerNetwork = false;
 		localPlayerCount++;
 		return true;
+	}
+
+	public void RegisterPlayer(GameObject player)
+	{
+		localPlayers[0] = player;
+		localPlayerCount = 1;
 	}
 
 	public bool IsLocalPlayerCountReached()

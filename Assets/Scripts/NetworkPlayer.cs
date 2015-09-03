@@ -34,6 +34,7 @@ public class NetworkPlayer : NetworkBehaviour
 		player.playerNb = (uint)base.netId.Value;
 		player.InitEjectForce ();
 		player.TeleportToSpawnPosition();
+		GameManager.instance.RegisterPlayer(player.gameObject);
 	}
 
 	// In case the color was set on local GameManager before the client was started.
