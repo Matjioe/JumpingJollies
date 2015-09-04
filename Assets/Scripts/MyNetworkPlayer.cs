@@ -15,7 +15,6 @@ public class MyNetworkPlayer : NetworkBehaviour
 	public void Awake()
 	{
 		InitPlayer();
-		player.InitHead();
 		Debug.Log("Awake Player");
 	}
 
@@ -23,10 +22,12 @@ public class MyNetworkPlayer : NetworkBehaviour
 	{
 		player = GetComponent<Player>();
 		player.isMultiplayerNetwork = true;
+		player.networkPlayer = this;
 	}
 
 	public void Start()
 	{
+		player.InitHead();
 	}
 
 	public override void OnStartLocalPlayer ()
@@ -34,8 +35,6 @@ public class MyNetworkPlayer : NetworkBehaviour
 		Debug.Log("Start Local Player");
 		InitPlayer();
 		player.playerNb = (uint)base.netId.Value;
-		player.SetColor();
-
 		player.InitEjectForce ();
 		player.TeleportToSpawnPosition();
 		GameManager.instance.RegisterPlayer(player.gameObject);
@@ -48,7 +47,6 @@ public class MyNetworkPlayer : NetworkBehaviour
 		InitPlayer();
 		player.playerNb = (uint)base.netId.Value;
 		player.SetColor();
-		player.TeleportToSpawnPosition();
 	}
 
 	void OnRagDoll(bool newRagDoll)
@@ -67,17 +65,17 @@ public class MyNetworkPlayer : NetworkBehaviour
 	{
 		if (isClient)
 		{
-			if (player.IsDead())
-			{
-				player.Respawn();
-				CmdSetRagdoll(false);
-				CmdSetKinematic(true);
-			}
 		}
 		
 		if (!isLocalPlayer)
 			return;
-		
+
+		if (player.IsDead())
+		{
+			player.Respawn();
+			CmdSetRagdoll(false);
+			CmdSetKinematic(true);
+		}
 		if (player.IsPlaying())
 		{
 			player.UpdatePlayerController();
@@ -85,8 +83,7 @@ public class MyNetworkPlayer : NetworkBehaviour
 		}
 		else if (player.StartPlaying())
 		{
-			CmdSetKinematic(false);
-			player.OnStartPlaying();
+			OnStartPlaying();
 		}
 	}
 
@@ -98,8 +95,15 @@ public class MyNetworkPlayer : NetworkBehaviour
 		if (col.CompareTag ("DeathBar"))
 		{
 			CmdSetRagdoll(true);
+			player.EnableRagdoll(true);
 			player.AddEjectForce(GameManager.instance.ejectForce);
 		}
+	}
+
+	public void OnStartPlaying()
+	{
+		CmdSetKinematic(false);
+		player.OnStartPlaying();
 	}
 
 	[Command]

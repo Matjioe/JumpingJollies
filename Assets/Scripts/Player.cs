@@ -15,6 +15,7 @@ public class Player : MonoBehaviour {
 	//public bool isGrounded = false;
 
 	public bool isMultiplayerNetwork = false;
+	public MyNetworkPlayer networkPlayer = null;
 	
 	public bool isWaitingForStart = false;
 
@@ -180,9 +181,15 @@ public class Player : MonoBehaviour {
 	public void TriggerJump()
 	{
 		if (isWaitingForStart)
+		{
+			if (isMultiplayerNetwork == true)
+				networkPlayer.OnStartPlaying();
 			OnStartPlaying();
+		}
 		else
+		{
 			Jump ();
+		}
 	}
 
 	bool IsGrounded()
