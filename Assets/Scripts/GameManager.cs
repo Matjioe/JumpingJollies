@@ -45,6 +45,13 @@ public class GameManager : MonoBehaviour {
 		lastPoleRPS = startPoleRPS;
 		timeSpent = 0.0f;
 		localPlayers = new GameObject[maxLocalPlayers];
+
+		Debug.Log("Awake GameManager");
+	}
+
+	void Start()
+	{
+		Debug.Log("Start GameManager");
 	}
 
 	void Update()

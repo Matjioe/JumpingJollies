@@ -7,6 +7,13 @@ public class MenuManager : MonoBehaviour {
 	{
 		Application.LoadLevel("LocalGame");
 	}
+
+	public void LoadLobby()
+	{
+		// Destory network manager because we will use the one from the lobby scene 
+		Destroy(FindObjectOfType<MenuNetworkManager>());
+		Application.LoadLevel("LobbyScene");
+	}
 	
 	public void ExitGame()
 	{

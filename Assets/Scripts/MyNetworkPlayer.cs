@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.Networking;
 
 [RequireComponent(typeof(Player))]
-public class NetworkPlayer : NetworkBehaviour
+public class MyNetworkPlayer : NetworkBehaviour
 {
 	[SyncVar(hook="OnRagDoll")]
 	public bool ragdoll = true;
@@ -15,6 +15,8 @@ public class NetworkPlayer : NetworkBehaviour
 	public void Awake()
 	{
 		InitPlayer();
+		player.InitHead();
+		Debug.Log("Awake Player");
 	}
 
 	void InitPlayer()
@@ -25,13 +27,15 @@ public class NetworkPlayer : NetworkBehaviour
 
 	public void Start()
 	{
-		player.InitHead();
 	}
 
 	public override void OnStartLocalPlayer ()
 	{
+		Debug.Log("Start Local Player");
 		InitPlayer();
 		player.playerNb = (uint)base.netId.Value;
+		player.SetColor();
+
 		player.InitEjectForce ();
 		player.TeleportToSpawnPosition();
 		GameManager.instance.RegisterPlayer(player.gameObject);
@@ -40,9 +44,11 @@ public class NetworkPlayer : NetworkBehaviour
 	// In case the color was set on local GameManager before the client was started.
 	public override void OnStartClient ()
 	{
+		Debug.Log("Start Client Player");
 		InitPlayer();
 		player.playerNb = (uint)base.netId.Value;
 		player.SetColor();
+		player.TeleportToSpawnPosition();
 	}
 
 	void OnRagDoll(bool newRagDoll)
